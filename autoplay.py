@@ -68,110 +68,130 @@ def click_if_there(target_image_path):
         time.sleep(1)
 
 
-if __name__ == "__main__":
+def playGame(list):
     # bulletinboard
-    click_if_there("pics/outpost.png")
-    click_if_there("pics/bulletinboard.png")
-    click_if_there("pics/dispatchall.png")
-    click_if_there("pics/dispatch.png")
-    time.sleep(1)
-    click_if_there("pics/homebulletinboard.png")
-    click_if_there("pics/home.png")
+    if "Bulletin Board" in list:
+        click_if_there("pics/outpost.png")
+        click_if_there("pics/bulletinboard.png")
+        click_if_there("pics/dispatchall.png")
+        click_if_there("pics/dispatch.png")
+        time.sleep(1)
+        click_if_there("pics/homebulletinboard.png")
+        click_if_there("pics/home.png")
 
     # daily login shop
-    click_if_there("pics/cashshop.png")
-    click_if_there("pics/dailyloginsymbol.png")
-    click_if_there("pics/dailytext.png")
-    click_if_there("pics/dailyfreepackage.png")
-    click_if_there("pics/cashshopclaimrewards.png")
-    time.sleep(1)
-    click_if_there("pics/home.png")
+    if "Daily Login Shop" in list:
+        click_if_there("pics/cashshop.png")
+        click_if_there("pics/dailyloginsymbol.png")
+        click_if_there("pics/dailytext.png")
+        if is_image_on_screen("pics/dailyfreepackagesoldout.png") == None:
+            click_if_there("pics/dailyfreepackage.png")
+            click_if_there("pics/cashshopclaimrewards.png")
+            time.sleep(1)
+        click_if_there("pics/home.png")
 
     # Send friend points
-    click_if_there("pics/friends.png")
-    click_if_there("pics/friendssendandreceive.png")
-    click_if_there("pics/confirm.png")
-    click_if_there("pics/x.png")
+    if "Send Friend Points" in list:
+        click_if_there("pics/friends.png")
+        if is_image_on_screen("pics/nofriendpoints.png") == None:
+            click_if_there("pics/friendssendandreceive.png")
+            click_if_there("pics/confirm.png")
+        click_if_there("pics/x.png")
 
     # Claim Outpost defense
-    click_if_there("pics/outpostdefense.png")
-    click_if_there("pics/outpostdefenseclaim.png")
-    click_if_there("pics/outpostdefenseclaim3.png")
-
-    # Shop
-    click_if_there("pics/shop.png")
+    if "Claim Outpost Defense" in list:
+        click_if_there("pics/outpostdefense.png")
+        click_if_there("pics/outpostdefenseclaim.png")
+        click_if_there("pics/outpostdefenseclaim3.png")
 
     # General Shop
-    click_if_there("pics/100sale.png")
-    click_if_there("pics/buy.png")
-    click_if_there("pics/outpostdefenseclaim2.png")
-    click_if_there("pics/refresh.png")
-    click_if_there("pics/confirm.png")
-
-    click_if_there("pics/100sale.png")
-    click_if_there("pics/buy.png")
-    click_if_there("pics/outpostdefenseclaim2.png")
+    if "General Shop" in list:
+        click_if_there("pics/shop.png")
+        click_if_there("pics/100sale.png")
+        click_if_there("pics/buy.png")
+        click_if_there("pics/outpostdefenseclaim2.png")
+        click_if_there("pics/refresh.png")
+        click_if_there("pics/confirm.png")
+        click_if_there("pics/100sale.png")
+        click_if_there("pics/buy.png")
+        click_if_there("pics/outpostdefenseclaim2.png")
+        if "Arena Shop" not in list:
+            click_if_there("pics/home.png")
 
     # Arenashop from General Shop
-    click_if_there("pics/arena shop.png")
-    click_if_there("pics/codeManualArenaShop.png")
-    click_if_there("pics/buy.png")
-    click_if_there("pics/outpostdefenseclaim2.png")
-    click_if_there("pics/codeManualArenaShop.png")
-    click_if_there("pics/buy.png")
-    click_if_there("pics/outpostdefenseclaim2.png")
-    click_if_there("pics/codeManualArenaShop.png")
-    click_if_there("pics/buy.png")
-    click_if_there("pics/outpostdefenseclaim2.png")
-
-    click_if_there("pics/home.png")
+    if "Arena Shop" in list:
+        if "General Shop" not in list:
+            click_if_there("pics/shop.png")
+        click_if_there("pics/arena shop.png")
+        click_if_there("pics/codeManualArenaShop.png")
+        click_if_there("pics/buy.png")
+        click_if_there("pics/outpostdefenseclaim2.png")
+        click_if_there("pics/codeManualArenaShop.png")
+        click_if_there("pics/buy.png")
+        click_if_there("pics/outpostdefenseclaim2.png")
+        click_if_there("pics/codeManualArenaShop.png")
+        click_if_there("pics/buy.png")
+        click_if_there("pics/outpostdefenseclaim2.png")
+        click_if_there("pics/home.png")
 
     # Go to ark
-    click_if_there("pics/ark.png")
+    if "Claim Special Rewards" in list or "Simulation Room" in list:
+        click_if_there("pics/ark.png")
 
     # Get special rewards
-    click_if_there("pics/specialreward.png")
-    click_if_there("pics/claimarena.png")
+    if "Claim Special Rewards" in list:
+        click_if_there("pics/specialreward.png")
+        click_if_there("pics/claimarena.png")
 
     # Try having it do simulation room
-    click_if_there("pics/simulationroom.png")
-    click_if_there("pics/beginsimulation.png")
-    click_if_there("pics/simulationroom5.png")
-    click_if_there("pics/simulationroomc.png")
-    click_if_there("pics/beginsimulationbutton.png")
-    simulation_mode = True
-    while simulation_mode:
-        if is_image_on_screen("pics/simulationselect.png"):
-            if is_image_on_screen("pics/simulationroomnormal.png"):
-                print("Looking for normal then quick select")
-                click_if_there("pics/simulationroomnormal.png")
-                click_if_there("pics/quickbutton.png")
-                time.sleep(1)
-            elif is_image_on_screen("pics/simulationroomhard.png"):
-                print("looking for hard")
-                click_if_there("pics/simulationroomhard.png")
-                click_if_there("pics/simulationroomstartbattle.png")
-                time.sleep(30)
-            elif is_image_on_screen("pics/simulationroomicu.png"):
-                print("Looking for icu")
-                click_if_there("pics/simulationroomicu.png")
-                click_if_there("pics/simulationroomicurecover.png")
-                click_if_there("pics/recoverconfirm.png")
+    if "Simulation Room" in list:
+        click_if_there("pics/simulationroom.png")
+        click_if_there("pics/beginsimulation.png")
+        click_if_there("pics/simulationroom5.png")
+        click_if_there("pics/simulationroomc.png")
+        click_if_there("pics/beginsimulationbutton.png")
+        simulation_mode = True
+        while simulation_mode:
+            if is_image_on_screen("pics/simulationselect.png"):
+                if is_image_on_screen("pics/simulationroomnormal.png"):
+                    print("Looking for normal then quick select")
+                    click_if_there("pics/simulationroomnormal.png")
+                    click_if_there("pics/quickbutton.png")
+                    time.sleep(1)
+                elif is_image_on_screen("pics/simulationroomhard.png"):
+                    print("looking for hard")
+                    click_if_there("pics/simulationroomhard.png")
+                    click_if_there("pics/simulationroomstartbattle.png")
+                    time.sleep(30)
+                elif is_image_on_screen("pics/simulationroomicu.png"):
+                    print("Looking for icu")
+                    click_if_there("pics/simulationroomicu.png")
+                    click_if_there("pics/simulationroomicurecover.png")
+                    click_if_there("pics/recoverconfirm.png")
+                    click_if_there("pics/confirm.png")
+            elif is_image_on_screen("pics/simulationselectbuffs.png"):
+                print("looking for chain levels")
+                click_if_there("pics/simulationroomchainlevels.png")
                 click_if_there("pics/confirm.png")
-        elif is_image_on_screen("pics/simulationselectbuffs.png"):
-            print("looking for chain levels")
-            click_if_there("pics/simulationroomchainlevels.png")
-            click_if_there("pics/confirm.png")
-        elif is_image_on_screen("pics/simulationroomtapthespacetoclear.png"):
-            print("looking for space to clear")
-            click_if_there("pics/simulationroomtapthespacetoclear.png")
-            time.sleep(2)
-        elif is_image_on_screen("pics/simulationsavesimulation.png"):
-            print("looking to end simulation")
-            click_if_there("pics/simulationsavesimulation.png")
-            click_if_there("pics/confirm.png")
-            click_if_there("pics/simulationroomchainlevels.png")
-            click_if_there("pics/confirm.png")
-            click_if_there("pics/back.png")
-            simulation_mode = False
+            elif is_image_on_screen("pics/simulationroomtapthespacetoclear.png"):
+                print("looking for space to clear")
+                click_if_there("pics/simulationroomtapthespacetoclear.png")
+                time.sleep(2)
+            elif is_image_on_screen("pics/simulationsavesimulation.png"):
+                print("looking to end simulation")
+                click_if_there("pics/simulationsavesimulation.png")
+                click_if_there("pics/confirm.png")
+                click_if_there("pics/simulationroomchainlevels.png")
+                click_if_there("pics/confirm.png")
+                click_if_there("pics/back.png")
+                simulation_mode = False
+            time.sleep(1)
+
+    # Go back if in ark
+    if "Claim Special Rewards" in list or "Simulation Room" in list:
         time.sleep(1)
+        click_if_there("pics/home.png")
+
+
+if __name__ == "__main__":
+    playGame()
