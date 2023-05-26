@@ -20,6 +20,8 @@ def start_function():
         selected_options.append("Claim Special Rewards")
     if simulation_room_var.get():
         selected_options.append("Simulation Room")
+    if tribe_tower_var.get():
+        selected_options.append("Tribe Tower")
 
     # Call the different function with the selected options
     call_function(selected_options)
@@ -38,14 +40,15 @@ window = tk.Tk()
 window.title("Options Selector")
 
 # Create the checkbox variables
-bulletin_board_var = tk.IntVar()
-daily_login_shop_var = tk.IntVar()
-send_friend_points_var = tk.IntVar()
-claim_outpost_defense_var = tk.IntVar()
-general_shop_var = tk.IntVar()
-arena_shop_var = tk.IntVar()
-claim_special_rewards_var = tk.IntVar()
-simulation_room_var = tk.IntVar()
+bulletin_board_var = tk.IntVar(value=1)
+daily_login_shop_var = tk.IntVar(value=1)
+send_friend_points_var = tk.IntVar(value=1)
+claim_outpost_defense_var = tk.IntVar(value=1)
+general_shop_var = tk.IntVar(value=1)
+arena_shop_var = tk.IntVar(value=1)
+claim_special_rewards_var = tk.IntVar(value=1)
+simulation_room_var = tk.IntVar(value=1)
+tribe_tower_var = tk.IntVar(value=1)
 
 # Create the checkboxes
 bulletin_board_checkbox = tk.Checkbutton(
@@ -85,6 +88,11 @@ simulation_room_checkbox = tk.Checkbutton(
     window, text="Simulation Room", variable=simulation_room_var
 )
 simulation_room_checkbox.pack()
+
+tribe_tower_checkbox = tk.Checkbutton(
+    window, text="Tribe Tower", variable=tribe_tower_var
+)
+tribe_tower_checkbox.pack()
 
 # Create the Start button
 start_button = tk.Button(window, text="Start", command=start_function)

@@ -59,10 +59,14 @@ def click_on_image(image_path):
 
 def click_if_there(target_image_path):
     coordinates = get_image_coordinates(target_image_path)
+    i = 0
     while coordinates == None:
+        i += 1
         print("looking for {}", target_image_path)
         coordinates = get_image_coordinates(target_image_path)
         time.sleep(1)
+        if i >= 10:
+            break
     if coordinates:
         click_on_image(target_image_path)
         time.sleep(1)
@@ -84,23 +88,28 @@ def playGame(list):
         click_if_there("pics/cashshop.png")
         click_if_there("pics/dailyloginsymbol.png")
         click_if_there("pics/dailytext.png")
-        if is_image_on_screen("pics/dailyfreepackagesoldout.png") == None:
-            click_if_there("pics/dailyfreepackage.png")
-            click_if_there("pics/cashshopclaimrewards.png")
-            time.sleep(1)
+        click_if_there("pics/dailyfreepackage.png")
+        click_if_there("pics/cashshopclaimrewards.png")
         click_if_there("pics/home.png")
 
     # Send friend points
     if "Send Friend Points" in list:
         click_if_there("pics/friends.png")
-        if is_image_on_screen("pics/nofriendpoints.png") == None:
-            click_if_there("pics/friendssendandreceive.png")
-            click_if_there("pics/confirm.png")
+        click_if_there("pics/friendssendandreceive.png")
+        click_if_there("pics/confirm.png")
         click_if_there("pics/x.png")
 
     # Claim Outpost defense
     if "Claim Outpost Defense" in list:
         click_if_there("pics/outpostdefense.png")
+        # Wipeout
+        click_if_there("pics/wipeout.png")
+        time.sleep(2)
+        if is_image_on_screen("pics/gemswipeout.png"):
+            click_if_there("pics/exitwipeout.png")
+        else:
+            click_if_there("pics/wipeoutbutton.png")
+            click_if_there("pics/leavewipeout.png")
         click_if_there("pics/outpostdefenseclaim.png")
         click_if_there("pics/outpostdefenseclaim3.png")
 
@@ -135,8 +144,14 @@ def playGame(list):
         click_if_there("pics/home.png")
 
     # Go to ark
-    if "Claim Special Rewards" in list or "Simulation Room" in list:
+    ark = False
+    if (
+        "Claim Special Rewards" in list
+        or "Simulation Room" in list
+        or "Tribe Tower" in list
+    ):
         click_if_there("pics/ark.png")
+        ark = True
 
     # Get special rewards
     if "Claim Special Rewards" in list:
@@ -185,12 +200,38 @@ def playGame(list):
                 click_if_there("pics/confirm.png")
                 click_if_there("pics/back.png")
                 simulation_mode = False
+            elif is_image_on_screen("pics/missionfailed.png"):
+                exit()
             time.sleep(1)
 
+    # Tribe Tower
+    if "Tribe Tower" in list:
+        tribe_tower = True
+        click_if_there("pics/tribetower.png")
+        time.sleep(2)
+        while tribe_tower:
+            if is_image_on_screen("pics/tribetowerattempts.png"):
+                click_if_there("pics/tribetowerattempts.png")
+            elif is_image_on_screen("pics/clicktribetower.png"):
+                click_if_there("pics/clicktribetower.png")
+                click_if_there("pics/tribetowerstart.png")
+                time.sleep(20)
+            # Currently leaves if any tribe tower levels fail
+            elif is_image_on_screen("pics/missionfailed.png"):
+                click_if_there("pics/backafteroperationfailed.png")
+                time.sleep(4)
+                click_if_there("pics/back.png")
+                time.sleep(2)
+                click_if_there("pics/back.png")
+                break
+            time.sleep(3)
+
     # Go back if in ark
-    if "Claim Special Rewards" in list or "Simulation Room" in list:
+    if ark:
         time.sleep(1)
         click_if_there("pics/home.png")
+
+    exit()
 
 
 if __name__ == "__main__":
