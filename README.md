@@ -16,3 +16,4 @@
 6. Arena Shop
 7. Claim Special Rewards (Arena Rewards)
 8. Simulation Room (Current assumes that you can full clear it at 5C difficulty)
+9. Tribe Tower
