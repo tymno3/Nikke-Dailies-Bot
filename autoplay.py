@@ -45,6 +45,32 @@ def get_image_coordinates(image_path):
     return None
 
 
+def get_images_coordinates(image_path):
+    # Load the target image
+    target_image = cv2.imread(image_path)
+
+    # Capture the screen
+    screenshot = pyautogui.screenshot()
+    screenshot_image = cv2.cvtColor(np.array(screenshot), cv2.COLOR_RGB2BGR)
+
+    # Search for the target image in the screenshot
+    result = cv2.matchTemplate(screenshot_image, target_image, cv2.TM_CCOEFF_NORMED)
+    locations = np.where(
+        result >= 0.8
+    )  # Find all locations with a match value above the threshold
+
+    # If there are no matches, return None
+    if len(locations[0]) == 0:
+        return None
+
+    # Get the coordinates of the matched image below the first occurrence
+    image_width, image_height = target_image.shape[1], target_image.shape[0]
+    x = locations[1][0]  # x-coordinate of the first occurrence
+    y = locations[0][0] + image_height  # y-coordinate below the first occurrence
+
+    return (x, y)
+
+
 def is_image_on_screen(image_path):
     coordinates = get_image_coordinates(image_path)
     return coordinates is not None
@@ -70,6 +96,22 @@ def click_if_there(target_image_path):
     if coordinates:
         click_on_image(target_image_path)
         time.sleep(1)
+
+
+def click_image_below_another(image_path, reference_image_path):
+    reference_coordinates = get_images_coordinates(reference_image_path)
+    if reference_coordinates:
+        reference_x, reference_y = reference_coordinates
+
+        target_coordinates = get_images_coordinates(image_path)
+        if target_coordinates:
+            target_x, target_y = target_coordinates
+
+            # Calculate the coordinates below the reference image
+            target_y_below_reference = reference_y + (target_y - reference_y)
+
+            # Perform a mouse click at the calculated coordinates
+            pyautogui.click(target_x, target_y_below_reference)
 
 
 def playGame(list):
@@ -109,9 +151,11 @@ def playGame(list):
             click_if_there("pics/exitwipeout.png")
         else:
             click_if_there("pics/wipeoutbutton.png")
+            click_if_there("pics/confirm.png")
             click_if_there("pics/leavewipeout.png")
         click_if_there("pics/outpostdefenseclaim.png")
         click_if_there("pics/outpostdefenseclaim3.png")
+    time.sleep(3)
 
     # General Shop
     if "General Shop" in list:
@@ -120,10 +164,13 @@ def playGame(list):
         click_if_there("pics/buy.png")
         click_if_there("pics/outpostdefenseclaim2.png")
         click_if_there("pics/refresh.png")
-        click_if_there("pics/confirm.png")
-        click_if_there("pics/100sale.png")
-        click_if_there("pics/buy.png")
-        click_if_there("pics/outpostdefenseclaim2.png")
+        if is_image_on_screen("pics/zerogems.png"):
+            click_if_there("pics/confirm.png")
+            click_if_there("pics/100sale.png")
+            click_if_there("pics/buy.png")
+            click_if_there("pics/outpostdefenseclaim2.png")
+        else:
+            click_if_there("pics/leaveshop.png")
         if "Arena Shop" not in list:
             click_if_there("pics/home.png")
 
@@ -149,6 +196,7 @@ def playGame(list):
         "Claim Special Rewards" in list
         or "Simulation Room" in list
         or "Tribe Tower" in list
+        or "Arena" in list
     ):
         click_if_there("pics/ark.png")
         ark = True
@@ -202,11 +250,56 @@ def playGame(list):
                 simulation_mode = False
             elif is_image_on_screen("pics/missionfailed.png"):
                 exit()
+            # Has a chance to get stuck
+            elif is_image_on_screen("pics/samebuff.png"):
+                click_image_below_another(
+                    "pics/simulationroomchainlevels.png", "pics/activebufflist.png"
+                )
+                click_if_there("pics/confirm.png")
             time.sleep(1)
+
+    # Arena
+    if "Arena" in list:
+        rookiearena = True
+        specialarena = True
+        click_if_there("pics/arena.png")
+        click_if_there("pics/fivefreeattempts.png")
+        while rookiearena:
+            if is_image_on_screen("pics/free.png"):
+                click_if_there("pics/free.png")
+                click_if_there("pics/startbattle.png")
+                time.sleep(10)
+            elif is_image_on_screen("pics/arenatap.png"):
+                click_if_there("pics/arenatap.png")
+                time.sleep(3)
+            elif is_image_on_screen("pics/arenanomorebattles.png"):
+                click_if_there("pics/back.png")
+                rookiearena = False
+                time.sleep(3)
+            time.sleep(2)
+        click_if_there("pics/twofreeattempts.png")
+        while specialarena:
+            if is_image_on_screen("pics/free.png"):
+                click_if_there("pics/free.png")
+                click_if_there("pics/startbattle.png")
+                time.sleep(10)
+            elif is_image_on_screen("pics/arenatap.png"):
+                click_if_there("pics/arenatap.png")
+                time.sleep(3)
+            elif is_image_on_screen("pics/arenanomorebattles.png"):
+                click_if_there("pics/back.png")
+                specialarena = False
+                time.sleep(3)
+            time.sleep(2)
+        click_if_there("pics/back.png")
+        time.sleep(2)
+        click_if_there("pics/back.png")
+        time.sleep(2)
 
     # Tribe Tower
     if "Tribe Tower" in list:
         tribe_tower = True
+        time.sleep(4)
         click_if_there("pics/tribetower.png")
         time.sleep(2)
         while tribe_tower:
@@ -215,7 +308,9 @@ def playGame(list):
             elif is_image_on_screen("pics/clicktribetower.png"):
                 click_if_there("pics/clicktribetower.png")
                 click_if_there("pics/tribetowerstart.png")
-                time.sleep(20)
+                time.sleep(60)
+            elif is_image_on_screen("pics/nextstagetribetower.png"):
+                click_if_there("pics/nextstagetribetower.png")
             # Currently leaves if any tribe tower levels fail
             elif is_image_on_screen("pics/missionfailed.png"):
                 click_if_there("pics/backafteroperationfailed.png")
