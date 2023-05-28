@@ -17,4 +17,4 @@
 7. Claim Special Rewards (Arena Rewards)
 8. Simulation Room (Current assumes that you can full clear it at 5C difficulty)
 9. Tribe Tower
-10. Arena
+10. Arena - For it to work, replace arenatap.png with your profile picture

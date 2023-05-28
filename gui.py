@@ -23,7 +23,7 @@ def start_function():
     if tribe_tower_var.get():
         selected_options.append("Tribe Tower")
     if arena_var.get():
-        selected_options.append("Tribe Arena")
+        selected_options.append("Arena")
 
     # Call the different function with the selected options
     call_function(selected_options)

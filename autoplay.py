@@ -151,7 +151,7 @@ def playGame(list):
             click_if_there("pics/exitwipeout.png")
         else:
             click_if_there("pics/wipeoutbutton.png")
-            click_if_there("pics/confirm.png")
+            click_if_there("pics/homebulletinboard.png")
             click_if_there("pics/leavewipeout.png")
         click_if_there("pics/outpostdefenseclaim.png")
         click_if_there("pics/outpostdefenseclaim3.png")
