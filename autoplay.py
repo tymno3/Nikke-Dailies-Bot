@@ -150,12 +150,13 @@ def playGame(list):
         if is_image_on_screen("pics/gemswipeout.png"):
             click_if_there("pics/exitwipeout.png")
         else:
+            click_if_there("pics/wipeout.png")
             click_if_there("pics/wipeoutbutton.png")
             click_if_there("pics/homebulletinboard.png")
             click_if_there("pics/leavewipeout.png")
         click_if_there("pics/outpostdefenseclaim.png")
         click_if_there("pics/outpostdefenseclaim3.png")
-    time.sleep(3)
+        time.sleep(3)
 
     # General Shop
     if "General Shop" in list:
@@ -198,6 +199,7 @@ def playGame(list):
         or "Tribe Tower" in list
         or "Arena" in list
     ):
+        time.sleep(3)
         click_if_there("pics/ark.png")
         ark = True
 
@@ -256,7 +258,7 @@ def playGame(list):
                     "pics/simulationroomchainlevels.png", "pics/activebufflist.png"
                 )
                 click_if_there("pics/confirm.png")
-            time.sleep(1)
+            time.sleep(4)
 
     # Arena
     if "Arena" in list:
