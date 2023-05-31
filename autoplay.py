@@ -318,7 +318,12 @@ def playGame(list):
                 click_if_there("pics/back.png")
                 time.sleep(2)
                 click_if_there("pics/back.png")
-                break
+                tribe_tower = False
+            elif is_image_on_screen("pics/tribetowernomore.png"):
+                click_if_there("pics/back.png")
+                time.sleep(2)
+                click_if_there("pics/back.png")
+                tribe_tower = False
             time.sleep(3)
 
     # Go back if in ark
