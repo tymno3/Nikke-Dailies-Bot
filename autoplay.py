@@ -205,7 +205,9 @@ def playGame(list):
     # Get special rewards
     if "Claim Special Rewards" in list:
         click_if_there("pics/specialreward.png")
-        click_if_there("pics/claimarena.png")
+        time.sleep(2)
+        click_if_there("pics/claimarena2.png")
+        click_if_there("pics/claimarenatap.png")
 
     # Try having it do simulation room
     if "Simulation Room" in list:
