@@ -1,6 +1,6 @@
 # Nikke Auto Player
  Python program to do dailies in Nikke instead of having the player manually do it themselves. 
- Finds certain pictures on the monitor and clicks them. (Will utilize your mouse)
+ Finds certain pictures on the monitor and clicks them. (Will utilize your mouse) (PC Version Only)
  
  Simple gui to select what the program does.
  
