@@ -14,60 +14,49 @@ def click(x, y):
     win32api.mouse_event(win32con.MOUSEEVENTF_LEFTUP, 0, 0)
 
 
-def get_image_coordinates(image_path):
-    # Load the target image
-    target_image = cv2.imread(image_path)
-
-    # Capture the screen
+def get_screenshot_image():
     screenshot = pyautogui.screenshot()
-    screenshot_image = cv2.cvtColor(np.array(screenshot), cv2.COLOR_RGB2BGR)
+    return cv2.cvtColor(np.array(screenshot), cv2.COLOR_RGB2BGR)
 
-    # Search for the target image in the screenshot
-    result = cv2.matchTemplate(screenshot_image, target_image, cv2.TM_CCOEFF_NORMED)
+
+def match_template(image, template):
+    result = cv2.matchTemplate(image, template, cv2.TM_CCOEFF_NORMED)
     _, max_val, _, max_loc = cv2.minMaxLoc(result)
+    return max_val, max_loc
 
-    # Define a threshold value for matching
+
+def get_image_coordinates(image_path):
+    target_image = cv2.imread(image_path)
+    screenshot_image = get_screenshot_image()
+
     threshold = 0.8
+    max_val, max_loc = match_template(screenshot_image, target_image)
 
-    # If the maximum value exceeds the threshold, return the coordinates
     if max_val >= threshold:
-        # Get the coordinates of the matched image
         image_width, image_height = target_image.shape[1], target_image.shape[0]
         top_left = max_loc
         bottom_right = (top_left[0] + image_width, top_left[1] + image_height)
-
-        # Calculate the center point of the matched image
         center_x = top_left[0] + image_width // 2
         center_y = top_left[1] + image_height // 2
-
         return (center_x, center_y)
 
     return None
 
 
 def get_images_coordinates(image_path):
-    # Load the target image
     target_image = cv2.imread(image_path)
+    screenshot_image = get_screenshot_image()
 
-    # Capture the screen
-    screenshot = pyautogui.screenshot()
-    screenshot_image = cv2.cvtColor(np.array(screenshot), cv2.COLOR_RGB2BGR)
-
-    # Search for the target image in the screenshot
+    threshold = 0.8
     result = cv2.matchTemplate(screenshot_image, target_image, cv2.TM_CCOEFF_NORMED)
-    locations = np.where(
-        result >= 0.8
-    )  # Find all locations with a match value above the threshold
+    locations = np.where(result >= threshold)
 
-    # If there are no matches, return None
     if len(locations[0]) == 0:
         return None
 
-    # Get the coordinates of the matched image below the first occurrence
     image_width, image_height = target_image.shape[1], target_image.shape[0]
-    x = locations[1][0]  # x-coordinate of the first occurrence
-    y = locations[0][0] + image_height  # y-coordinate below the first occurrence
-
+    x = locations[1][0]
+    y = locations[0][0] + image_height
     return (x, y)
 
 
@@ -79,38 +68,29 @@ def is_image_on_screen(image_path):
 def click_on_image(image_path):
     coordinates = get_image_coordinates(image_path)
     if coordinates:
-        # Perform a mouse click at the center of the matched image
         click(coordinates[0], coordinates[1])
 
 
 def click_if_there(target_image_path):
-    coordinates = get_image_coordinates(target_image_path)
     i = 0
-    while coordinates == None:
+    while i < 10:
         i += 1
-        print("looking for {}", target_image_path)
+        print(f"looking for {target_image_path}")
         coordinates = get_image_coordinates(target_image_path)
         time.sleep(1)
-        if i >= 10:
+        if coordinates:
+            click_on_image(target_image_path)
             break
-    if coordinates:
-        click_on_image(target_image_path)
-        time.sleep(1)
 
 
 def click_image_below_another(image_path, reference_image_path):
     reference_coordinates = get_images_coordinates(reference_image_path)
     if reference_coordinates:
         reference_x, reference_y = reference_coordinates
-
         target_coordinates = get_images_coordinates(image_path)
         if target_coordinates:
             target_x, target_y = target_coordinates
-
-            # Calculate the coordinates below the reference image
             target_y_below_reference = reference_y + (target_y - reference_y)
-
-            # Perform a mouse click at the calculated coordinates
             pyautogui.click(target_x, target_y_below_reference)
 
 
@@ -249,6 +229,7 @@ def playGame(list):
                 click_if_there("pics/confirm.png")
                 click_if_there("pics/simulationroomchainlevels.png")
                 click_if_there("pics/confirm.png")
+                time.sleep(2)
                 click_if_there("pics/back.png")
                 simulation_mode = False
             elif is_image_on_screen("pics/missionfailed.png"):
